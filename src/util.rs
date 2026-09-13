@@ -67,7 +67,14 @@ macro_rules! impl_to_f64 {
             #[must_use]
             #[allow(clippy::cast_precision_loss)]
             pub fn to_f64(self) -> f64 {
-                self.bits as f64 * 10f64.powi(Exp::to_i32())
+                let exp = Exp::to_i32();
+                let scale = crate::num_traits::float::FloatCore::powi(10f64, exp.saturating_abs());
+
+                if exp.is_negative() {
+                    self.bits as f64 / scale
+                } else {
+                    self.bits as f64 * scale
+                }
             }
         }
     };
