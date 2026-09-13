@@ -69,7 +69,6 @@ macro_rules! impl_to_f64 {
             pub fn to_f64(self) -> f64 {
                 let exp = Exp::to_i32();
                 let scale = FloatCore::powi(10f64, exp.saturating_abs());
-
                 if exp.is_negative() {
                     self.bits as f64 / scale
                 } else {
